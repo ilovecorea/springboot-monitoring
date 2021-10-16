@@ -1,0 +1,23 @@
+# Server
+server:
+  port: 8080
+
+# Spring
+spring:
+  application:
+    name: spring-app
+  cloud:
+    consul:
+      enabled: false
+      discovery:
+        enabled: false
+
+# Logging
+logging.level.org.springframework: DEBUG
+
+# Management
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,health,prometheus
