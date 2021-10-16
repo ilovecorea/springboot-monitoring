@@ -1,7 +1,13 @@
+# Consul
 spring:
   cloud:
     consul:
+      enabled: true
       discovery:
+        enabled: true
         instanceId: "${spring.application.name}-${server.port}-${spring.cloud.client.ip-address}"
         prefer-ip-address: true
         health-check-critical-timeout: "1m"
+
+# Logging
+logging.level.org.springframework: DEBUG

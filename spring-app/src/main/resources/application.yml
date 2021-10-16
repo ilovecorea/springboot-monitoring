@@ -13,7 +13,7 @@ spring:
         enabled: false
 
 # Logging
-logging.level.org.springframework: DEBUG
+logging.level.org.springframework: INFO
 
 # Management
 management:

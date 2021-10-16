@@ -9,31 +9,57 @@ volumes:
 
 services:
 
-#  consul-server:
-#    image: hashicorp/consul:1.10.3
-#    container_name: consul-server
-#    restart: always
-#    volumes:
-#      - ./consul/server.json:/consul/config/server.json:ro
-#    networks:
-#      - monitoring
-#    ports:
-#      - "8500:8500"
-#      - "8600:8600/tcp"
-#      - "8600:8600/udp"
-#    command: "agent"
+  consul-server:
+    image: hashicorp/consul:1.10.3
+    container_name: consul-server
+    restart: always
+    volumes:
+      - ./consul/server.json:/consul/config/server.json:ro
+    networks:
+      - monitoring
+    ports:
+      - "8500:8500"
+      - "8600:8600/tcp"
+      - "8600:8600/udp"
+    command: "consul agent -dev -ui -client 0.0.0.0 -log-level=INFO"
 
-  spring-app:
+  spring-app1:
     build:
       context: spring-app
       dockerfile: Dockerfile
     container_name: app1
     image: ilovecorea/spring-app:${TAG:-latest}
     restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=consul
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - SPRING_CLOUD_CONSUL_HOST=consul-server
+      - SPRING_CLOUD_CONSUL_PORT=8500
     ports:
       - "8080:8080"
     networks:
       - monitoring
+    depends_on:
+      - consul-server
+
+  spring-app2:
+    build:
+      context: spring-app
+      dockerfile: Dockerfile
+    container_name: app2
+    image: ilovecorea/spring-app:${TAG:-latest}
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=consul
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - SPRING_CLOUD_CONSUL_HOST=consul-server
+      - SPRING_CLOUD_CONSUL_PORT=8500
+    ports:
+      - "8081:8080"
+    networks:
+      - monitoring
+    depends_on:
+      - consul-server
 
   node-exporter:
     image: prom/node-exporter:v1.2.2
@@ -70,6 +96,8 @@ services:
       - '--web.console.libraries=/etc/prometheus/console_libraries'
       - '--web.console.templates=/etc/prometheus/consoles'
       - '--web.enable-lifecycle'
+    depends_on:
+      - consul-server
 
   grafana:
     image: grafana/grafana:7.5.3
@@ -83,3 +111,5 @@ services:
       - monitoring
     ports:
       - "3000:3000"
+    depends_on:
+      - prometheus
