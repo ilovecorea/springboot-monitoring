@@ -1,4 +1,4 @@
-package com.example.springapp;
+package com.example.hello;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,9 +6,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-public class SpringAppApplication {
+public class SpringHelloApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringAppApplication.class, args);
+        SpringApplication.run(SpringHelloApplication.class, args);
     }
 }

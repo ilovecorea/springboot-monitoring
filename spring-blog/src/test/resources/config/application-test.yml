@@ -1,0 +1,27 @@
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    com.example.blog: DEBUG
+    liquibase: DEBUG
+
+spring:
+  cloud:
+    consul:
+      enabled: false
+      discovery:
+        enabled: false
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:postgresql:13.4:///blog?TC_TMPFS=/testtmpfs:rw
+    username: blog
+    password:
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+  jpa:
+    database-platform: com.example.blog.domain.util.FixedPostgreSQL10Dialect
+  liquibase:
+    change-log: classpath:config/liquibase/master.xml
+    enabled: true
+    contexts: test

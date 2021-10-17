@@ -1,4 +1,4 @@
-package com.example.springapp;
+package com.example.hello;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +10,7 @@ import java.net.UnknownHostException;
 import java.util.Random;
 
 @RestController
-public class SpringAppController {
+public class SpringHelloController {
 
 	@GetMapping("/")
 	public String hostname() throws UnknownHostException {

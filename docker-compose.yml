@@ -9,6 +9,18 @@ volumes:
 
 services:
 
+  postgresql:
+    image: postgres:13.4
+    environment:
+      - POSTGRES_USER=blog
+      - POSTGRES_PASSWORD=
+      - TZ=Asia/Seoul
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - "5432:5432"
+    networks:
+      - monitoring
+
   consul-server:
     image: hashicorp/consul:1.10.3
     container_name: consul-server

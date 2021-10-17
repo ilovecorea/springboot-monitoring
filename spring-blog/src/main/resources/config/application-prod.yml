@@ -1,0 +1,23 @@
+spring:
+  cloud:
+    consul:
+      enabled: true
+      discovery:
+        enabled: true
+        instanceId: "${spring.application.name}-${server.port}-${spring.cloud.client.ip-address}"
+        prefer-ip-address: true
+        health-check-critical-timeout: "1m"
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://postgresql:5432/blog
+    username: blog
+    password:
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+  liquibase:
+    change-log: classpath:config/liquibase/master.xml
+    enabled: true
+    contexts: faker
