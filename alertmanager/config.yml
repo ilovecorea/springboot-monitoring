@@ -9,7 +9,7 @@ route:
 receivers:
   - name: 'web.hook'
     webhook_configs:
-      - url: 'http://prometheus-bot:9087/alert/-730254689'
+      - url: 'http://prometheus-bot:9087/alert/-----------'
 inhibit_rules:
   - source_match:
       severity: 'critical'

@@ -91,34 +91,36 @@ services:
     networks:
       - monitoring
 
-  prometheus-bot:
-    container_name: prometheus-bot
-    image: ilovecorea/prometheus-bot:latest
-    build:
-      context: prometheus_bot
-      dockerfile: Dockerfile
-    volumes:
-      - ./telegrambot/:/etc/telegrambot/
-      - ./telegrambot/config.yaml:/config.yaml
-    ports:
-      - 9087:9087
-    restart: always
-    networks:
-      - monitoring
+#  prometheus-bot:
+#    container_name: prometheus-bot
+#    image: ilovecorea/prometheus-bot:latest
+#    build:
+#      context: prometheus_bot
+#      dockerfile: Dockerfile
+#    volumes:
+#      - ./telegrambot/:/etc/telegrambot/
+#      - ./telegrambot/config.yaml:/config.yaml
+#    ports:
+#      - 9087:9087
+#    restart: always
+#    networks:
+#      - monitoring
 
-  alertmanager:
-    container_name: alertmanager
-    image: prom/alertmanager
-    ports:
-      - 9093:9093
-    volumes:
-      - ./alertmanager/:/etc/alertmanager/
-    restart: always
-    networks:
-      - monitoring
-    command:
-      - '--config.file=/etc/alertmanager/config.yml'
-      - '--storage.path=/alertmanager'
+#  alertmanager:
+#    container_name: alertmanager
+#    image: prom/alertmanager
+#    ports:
+#      - 9093:9093
+#    volumes:
+#      - ./alertmanager/:/etc/alertmanager/
+#    restart: always
+#    networks:
+#      - monitoring
+#    command:
+#      - '--config.file=/etc/alertmanager/config.yml'
+#      - '--storage.path=/alertmanager'
+#    depends_on:
+#      - prometheus-bot
 
   prometheus:
     image: prom/prometheus:v2.30.3
@@ -139,7 +141,7 @@ services:
       - '--web.enable-lifecycle'
     depends_on:
       - consul-server
-      - alertmanager
+#      - alertmanager
 
   grafana:
     image: grafana/grafana:7.5.3
