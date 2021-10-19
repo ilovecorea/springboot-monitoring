@@ -35,12 +35,12 @@ services:
       - "8600:8600/udp"
     command: "consul agent -dev -ui -client 0.0.0.0 -log-level=INFO"
 
-  spring-app1:
+  spring-hello:
     build:
-      context: spring-app
+      context: spring-hello
       dockerfile: Dockerfile
-    container_name: app1
-    image: ilovecorea/spring-app:${TAG:-latest}
+    container_name: hello
+    image: ilovecorea/spring-hello:${TAG:-latest}
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=consul
@@ -54,12 +54,12 @@ services:
     depends_on:
       - consul-server
 
-  spring-app2:
+  spring-blog:
     build:
-      context: spring-app
+      context: spring-blog
       dockerfile: Dockerfile
-    container_name: app2
-    image: ilovecorea/spring-app:${TAG:-latest}
+    container_name: blog
+    image: ilovecorea/spring-blog:${TAG:-latest}
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=consul
@@ -91,6 +91,35 @@ services:
     networks:
       - monitoring
 
+  prometheus-bot:
+    container_name: prometheus-bot
+    image: ilovecorea/prometheus-bot:latest
+    build:
+      context: prometheus_bot
+      dockerfile: Dockerfile
+    volumes:
+      - ./telegrambot/:/etc/telegrambot/
+      - ./telegrambot/config.yaml:/config.yaml
+    ports:
+      - 9087:9087
+    restart: always
+    networks:
+      - monitoring
+
+  alertmanager:
+    container_name: alertmanager
+    image: prom/alertmanager
+    ports:
+      - 9093:9093
+    volumes:
+      - ./alertmanager/:/etc/alertmanager/
+    restart: always
+    networks:
+      - monitoring
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+
   prometheus:
     image: prom/prometheus:v2.30.3
     container_name: prometheus
@@ -110,6 +139,7 @@ services:
       - '--web.enable-lifecycle'
     depends_on:
       - consul-server
+      - alertmanager
 
   grafana:
     image: grafana/grafana:7.5.3

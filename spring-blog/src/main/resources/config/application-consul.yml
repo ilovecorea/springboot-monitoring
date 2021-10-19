@@ -5,7 +5,7 @@ spring:
       discovery:
         enabled: true
         instanceId: "${spring.application.name}-${server.port}-${spring.cloud.client.ip-address}"
-        prefer-ip-address: true
+        prefer-ip-address: false
         health-check-critical-timeout: "1m"
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
