@@ -6,6 +6,7 @@ networks:
 
 volumes:
   prometheus_data: {}
+  elasticsearch:
 
 services:
 
@@ -91,37 +92,6 @@ services:
     networks:
       - monitoring
 
-#  prometheus-bot:
-#    container_name: prometheus-bot
-#    image: ilovecorea/prometheus-bot:latest
-#    build:
-#      context: prometheus_bot
-#      dockerfile: Dockerfile
-#    volumes:
-#      - ./telegrambot/:/etc/telegrambot/
-#      - ./telegrambot/config.yaml:/config.yaml
-#    ports:
-#      - 9087:9087
-#    restart: always
-#    networks:
-#      - monitoring
-
-#  alertmanager:
-#    container_name: alertmanager
-#    image: prom/alertmanager
-#    ports:
-#      - 9093:9093
-#    volumes:
-#      - ./alertmanager/:/etc/alertmanager/
-#    restart: always
-#    networks:
-#      - monitoring
-#    command:
-#      - '--config.file=/etc/alertmanager/config.yml'
-#      - '--storage.path=/alertmanager'
-#    depends_on:
-#      - prometheus-bot
-
   prometheus:
     image: prom/prometheus:v2.30.3
     container_name: prometheus
@@ -141,7 +111,6 @@ services:
       - '--web.enable-lifecycle'
     depends_on:
       - consul-server
-#      - alertmanager
 
   grafana:
     image: grafana/grafana:7.5.3
@@ -157,3 +126,73 @@ services:
       - "3000:3000"
     depends_on:
       - prometheus
+
+  elasticsearch:
+    build:
+      context: elasticsearch
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./elasticsearch/config/elasticsearch.yml
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+        read_only: true
+      - type: volume
+        source: elasticsearch
+        target: /usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_PASSWORD: changeme
+      # Use single node discovery in order to disable production mode and avoid bootstrap checks.
+      # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
+      discovery.type: "single-node"
+    networks:
+      - monitoring
+
+  logstash:
+    build:
+      context: logstash
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./logstash/config/logstash.yml
+        target: /usr/share/logstash/config/logstash.yml
+        read_only: true
+      - type: bind
+        source: ./logstash/pipeline
+        target: /usr/share/logstash/pipeline
+        read_only: true
+    ports:
+      - "5044:5044"
+      - "5000:5000/tcp"
+      - "5000:5000/udp"
+      - "9600:9600"
+    expose:
+      - "5044"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - monitoring
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    build:
+      context: kibana
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./kibana/config/kibana.yml
+        target: /usr/share/kibana/config/kibana.yml
+        read_only: true
+    ports:
+      - "5601:5601"
+    networks:
+      - monitoring
+    depends_on:
+      - elasticsearch
