@@ -1,9 +1,3 @@
-logging:
-  level:
-    ROOT: INFO
-    org.hibernate.SQL: INFO
-    com.example.blog: INFO
-
 spring:
   application:
     name: blog

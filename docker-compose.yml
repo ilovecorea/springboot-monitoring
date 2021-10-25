@@ -43,11 +43,16 @@ services:
     container_name: hello
     image: ilovecorea/spring-hello:${TAG:-latest}
     restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 1g
     environment:
       - SPRING_PROFILES_ACTIVE=consul
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - SPRING_CLOUD_CONSUL_HOST=consul-server
       - SPRING_CLOUD_CONSUL_PORT=8500
+      - JAVA_OPTS=-Xmx512m -Xms512m
     ports:
       - "8080:8080"
     networks:
@@ -62,11 +67,16 @@ services:
     container_name: blog
     image: ilovecorea/spring-blog:${TAG:-latest}
     restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 1g
     environment:
       - SPRING_PROFILES_ACTIVE=consul
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - SPRING_CLOUD_CONSUL_HOST=consul-server
       - SPRING_CLOUD_CONSUL_PORT=8500
+      - JAVA_OPTS=-Xmx512m -Xms512m
     ports:
       - "8081:8080"
     networks:
