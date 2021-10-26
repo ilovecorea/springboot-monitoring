@@ -16,4 +16,4 @@ spring:
 
 logging:
   config:
-    classpath:logback-local.xml
+    classpath:config/logback-local.xml

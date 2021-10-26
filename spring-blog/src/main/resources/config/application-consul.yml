@@ -24,4 +24,4 @@ spring:
 
 logging:
   config:
-    classpath:logback-consul.xml
+    classpath:config/logback-consul.xml
