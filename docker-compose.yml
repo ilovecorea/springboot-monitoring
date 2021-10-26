@@ -12,6 +12,7 @@ services:
 
   postgresql:
     image: postgres:13.4
+    container_name: postgres
     environment:
       - POSTGRES_USER=blog
       - POSTGRES_PASSWORD=
@@ -40,7 +41,7 @@ services:
     build:
       context: spring-hello
       dockerfile: Dockerfile
-    container_name: hello
+    container_name: spring-hello
     image: ilovecorea/spring-hello:${TAG:-latest}
     restart: always
     deploy:
@@ -64,7 +65,7 @@ services:
     build:
       context: spring-blog
       dockerfile: Dockerfile
-    container_name: blog
+    container_name: spring-blog
     image: ilovecorea/spring-blog:${TAG:-latest}
     restart: always
     deploy:
@@ -143,6 +144,7 @@ services:
       args:
         ELK_VERSION: $ELK_VERSION
     image: ilovecorea/elasticsearch${TAG:-latest}
+    container_name: lemonhc-elastic
     restart: always
     deploy:
       resources:
@@ -182,6 +184,7 @@ services:
       args:
         ELK_VERSION: $ELK_VERSION
     image: ilovecorea/logstash${TAG:-latest}
+    container_name: logstash
     deploy:
       resources:
         limits:
@@ -216,6 +219,7 @@ services:
       args:
         ELK_VERSION: $ELK_VERSION
     image: ilovecorea/kibana${TAG:-latest}
+    container_name: kibana
     deploy:
       resources:
         limits:
