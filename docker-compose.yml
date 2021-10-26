@@ -143,8 +143,6 @@ services:
       context: elasticsearch
       args:
         ELK_VERSION: $ELK_VERSION
-    image: ilovecorea/elasticsearch${TAG:-latest}
-    container_name: lemonhc-elastic
     restart: always
     deploy:
       resources:
@@ -162,11 +160,8 @@ services:
       - "9200:9200"
       - "9300:9300"
     environment:
-      bootstrap.memory_lock: true
       ES_JAVA_OPTS: "-Xmx2g -Xms2g"
       ELASTIC_PASSWORD: changeme
-      # Use single node discovery in order to disable production mode and avoid bootstrap checks.
-      # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
       discovery.type: "single-node"
     ulimits:
       memlock:
@@ -183,8 +178,6 @@ services:
       context: logstash
       args:
         ELK_VERSION: $ELK_VERSION
-    image: ilovecorea/logstash${TAG:-latest}
-    container_name: logstash
     deploy:
       resources:
         limits:
@@ -218,8 +211,6 @@ services:
       context: kibana
       args:
         ELK_VERSION: $ELK_VERSION
-    image: ilovecorea/kibana${TAG:-latest}
-    container_name: kibana
     deploy:
       resources:
         limits:
