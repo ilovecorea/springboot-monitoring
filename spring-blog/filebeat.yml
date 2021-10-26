@@ -1,0 +1,21 @@
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /var/log/springboot/*.log
+
+# Multiple Log를 수집하는 경우, 아래와 같이 추가로 입력
+# - type: log
+# 	enabled: true
+# 	paths: []
+
+# output 설정
+output.logstash:
+  enabled: true
+  hosts: ["logstash:5044"]
+
+# filebeat와 함께 제공된 샘플 Kibana 대시보드를 사용하는 경우
+setup.kibana:
+  host: "http://kibana:5601"
+  username: "elastic"
+  password: "changeme"
