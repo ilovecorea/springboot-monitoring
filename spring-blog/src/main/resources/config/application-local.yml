@@ -13,7 +13,3 @@ spring:
     change-log: classpath:config/liquibase/master.xml
     enabled: true
     contexts: faker
-
-logging:
-  config:
-    classpath:config/logback-local.xml

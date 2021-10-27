@@ -1,6 +1,6 @@
 spring:
   application:
-    name: blog
+    name: hello
   profiles:
     active: #spring.profiles.active#
     group:

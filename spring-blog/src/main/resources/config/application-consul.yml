@@ -22,6 +22,3 @@ spring:
     enabled: true
     contexts: faker
 
-logging:
-  config:
-    classpath:config/logback-consul.xml

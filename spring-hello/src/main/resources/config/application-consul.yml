@@ -8,6 +8,3 @@ spring:
         prefer-ip-address: false
         health-check-critical-timeout: "1m"
 
-logging:
-  config:
-   classpath:logback-consul.xml
