@@ -42,6 +42,7 @@ services:
       context: spring-hello
       dockerfile: Dockerfile
     container_name: spring-hello
+    hostname: hello
     image: ilovecorea/spring-hello:${TAG:-latest}
     restart: always
     deploy:
@@ -67,6 +68,7 @@ services:
       context: spring-blog
       dockerfile: Dockerfile
     container_name: spring-blog
+    hostname: blog
     image: ilovecorea/spring-blog:${TAG:-latest}
     restart: always
     deploy:
@@ -92,6 +94,7 @@ services:
       context: spring-admin
       dockerfile: Dockerfile
     container_name: spring-admin
+    hostname: spring-admin
     image: ilovecorea/spring-admin:${TAG:-latest}
     restart: always
     deploy:

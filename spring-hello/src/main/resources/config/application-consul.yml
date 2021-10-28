@@ -1,4 +1,9 @@
 spring:
+  boot:
+    admin:
+      client:
+        instance:
+          service-url: http://localhost:8080
   cloud:
     consul:
       enabled: true

@@ -22,6 +22,8 @@ management:
       prometheus:
         enabled: true
   endpoint:
+    health:
+      show-details: always
     prometheus:
       enabled: true
     metrics:
