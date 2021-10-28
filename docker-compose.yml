@@ -87,6 +87,28 @@ services:
       - consul-server
       - logstash
 
+  spring-admin:
+    build:
+      context: spring-admin
+      dockerfile: Dockerfile
+    container_name: spring-admin
+    image: ilovecorea/spring-admin:${TAG:-latest}
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+    environment:
+      - SPRING_CLOUD_CONSUL_HOST=consul-server
+      - SPRING_CLOUD_CONSUL_PORT=8500
+      - JAVA_OPTS=-Xmx512m -Xms512m
+    ports:
+      - "9000:8080"
+    networks:
+      - monitoring
+    depends_on:
+      - consul-server
+
   node-exporter:
     image: prom/node-exporter:v1.2.2
     container_name: node-exporter
