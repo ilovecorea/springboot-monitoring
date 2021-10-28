@@ -49,7 +49,7 @@ services:
         limits:
           memory: 1g
     environment:
-      - SPRING_PROFILES_ACTIVE=consul
+      - SPRING_PROFILES_ACTIVE=consul,logstash
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - SPRING_CLOUD_CONSUL_HOST=consul-server
       - SPRING_CLOUD_CONSUL_PORT=8500

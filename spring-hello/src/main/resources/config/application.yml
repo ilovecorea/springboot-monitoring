@@ -3,9 +3,6 @@ spring:
     name: hello
   profiles:
     active: #spring.profiles.active#
-    group:
-      consul:
-        - logstash
   cloud:
     consul:
       enabled: false
