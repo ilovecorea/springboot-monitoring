@@ -14,14 +14,26 @@ services:
     image: postgres:13.4
     container_name: postgres
     environment:
-      - POSTGRES_USER=blog
-      - POSTGRES_PASSWORD=
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
       - TZ=Asia/Seoul
-      - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - "5432:5432"
     networks:
       - monitoring
+
+  postgres-exporter:
+    container_name: postgres-exporter
+    image: quay.io/prometheuscommunity/postgres-exporter
+    hostname: postgres-exporter
+    env_file:
+      - .env
+    ports:
+      - "9187:9187"
+    networks:
+      - monitoring
+    depends_on:
+      - postgresql
 
   consul-server:
     image: hashicorp/consul:1.10.3
