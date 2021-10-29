@@ -1,0 +1,27 @@
+notifiers:
+  - name: telegram
+    type: telegram
+    uid: telegram
+    is_default: true
+    send_reminder: true
+    frequency: 10m
+    disable_resolve_message: false
+    settings:
+      uploadImage: true
+      bottoken:
+      chatid:
+  - name: hiworks
+    type: email
+    uid: hiworks
+    is_default: true
+    send_reminder: true
+    frequency: 10m
+    disable_resolve_message: false
+    settings:
+      addresses:
+
+delete_notifiers:
+  - name: telegram
+    uid: telegram
+  - name: hiworks
+    uid: hiworks
