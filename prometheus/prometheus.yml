@@ -19,23 +19,26 @@ scrape_configs:
     static_configs:
       - targets: ["node-exporter:9100"]
 
-  - job_name: 'consul-server'
-    metrics_path: '/v1/agent/metrics'
+  - job_name: "consul-server"
+    metrics_path: "/v1/agent/metrics"
     params:
-      format: [ 'prometheus' ]
+      format: [ "prometheus" ]
     static_configs:
-      - targets: [ 'consul-server:8500' ]
+      - targets: [ "consul-server:8500" ]
 
-  - job_name: 'actuator'
-    metrics_path: '/actuator/prometheus'
+  - job_name: "actuator"
+    metrics_path: "/actuator/prometheus"
     scrape_interval: 5s
 #    static_configs:
 #      - targets: [ 'host.docker.internal:8080' ]
     consul_sd_configs:
-      - server: 'consul-server:8500'
+      - server: "consul-server:8500"
     relabel_configs:
       - source_labels: [ __meta_consul_tags ]
         action: keep
       - source_labels: [ __meta_consul_service ]
         target_label: job
 
+  - job_name: "postgres"
+    static_configs:
+      - targets: [ "postgres-exporter:9187" ]
